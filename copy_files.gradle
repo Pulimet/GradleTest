@@ -1,0 +1,57 @@
+
+//  This copy task will copy the contents of the "images" directory into the "images2" directory.
+task copyImages(type: Copy) {
+    from 'images'
+    into 'images2'
+}
+
+task copyJpegs(type: Copy) {
+    from 'images'
+    include '*.jpg'
+    into 'images_jpegs'
+}
+
+task copyImageFolders(type: Copy) {
+    from('images') {
+        include '*.jpg'
+        into 'jpeg'
+    }
+
+    from('images') {
+        include '*.gif'
+        into 'gif'
+    }
+
+    into 'images_all'
+}
+
+task zipImages(type: Zip) {
+    baseName = 'images'
+    destinationDir = file('images_zip')
+    from 'images'
+}
+
+
+task zipImageFolders(type: Zip) {
+    baseName = 'images'
+    destinationDir = file('images_zip2')
+
+    from('images') {
+        include '*.jpg'
+        into 'jpeg'
+    }
+
+    from('images') {
+        include '*.gif'
+        into 'gif'
+    }
+}
+
+task deleteBuild(type: Delete) {
+    delete 'images2'
+    delete 'images_all'
+    delete 'images_jpegs'
+    delete 'images_zip'
+    delete 'images_zip2'
+}
+

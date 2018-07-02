@@ -1,0 +1,56 @@
+task printGreeting {
+    doLast {
+        println greeting // from gradle.properties
+    }
+}
+
+// Overrides gradle.properties
+// gradle -Pgreeting="Hello from the command line" pG
+
+ext {
+    greeting = "Hello from inside the build script"   // Override other
+}
+
+//===============================================
+
+class HelloTask extends DefaultTask {
+    @TaskAction
+    void doAction() {
+        println 'Hello World'
+    }
+}
+
+task hello(type: HelloTask)
+
+
+class HelloNameTask extends DefaultTask {
+    String firstName
+
+    @TaskAction
+    void doAction() {
+        println "Hello, $firstName"
+    }
+}
+task helloName(type: HelloNameTask) {
+    firstName = 'Alexey'
+}
+
+//=================
+
+task hello2(type: HelloTask2)
+
+class HelloTask2 extends DefaultTask {
+    @TaskAction
+    void doAction() {
+        logger.info 'Start HelloTask Action'
+        logger.lifecycle 'Hello World'
+        logger.info 'End HelloTask Action'
+    }
+}
+
+
+//===============================
+
+// gradlew dependencies
+// gradlew dependencies --configuration runtime
+// gradlew dependencyInsight --dependency commons-logging
